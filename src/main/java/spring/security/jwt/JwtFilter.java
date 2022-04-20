@@ -39,11 +39,8 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
-//        response.setHeader("Access-Control-Allow-Origin", "http://f0643001.xsph.ru");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        //response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
         response.setHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, "
                 + "Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
         response.setHeader("Access-Control-Allow-Credentials","true");

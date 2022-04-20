@@ -65,22 +65,13 @@ public class AuthController {
             );
             studentService.updateToken(student.getId(), token);
             return new ResponseEntity(HttpStatus.OK);
-//            ResponseEntity<RESTResponse> response = null;
-//            response = new ResponseEntity<>(RESTResponse.generateResponse(
-//                    null, "successful", "Log in successfully."), HttpStatus.OK);
-//            return ResponseEntity.status(200);
         } catch (Exception ex) {
-            //throw new BadCredentialsException("Invalid username or password");
-            //return ResponseEntity.status(403);
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "HTTP Status will be BAD REQUEST (CODE 400)\n");
-
-
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping(value = "/register", consumes = "application/json")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity register(@RequestBody RegisterRequest request) {
         String email = request.getEmail();
         String phone_number = request.getPhone_number();
         Student studentEmail = studentService.findStudentByEmail(email);
@@ -88,12 +79,12 @@ public class AuthController {
         if (studentPhone != null) {
             ProfileStatus status = profileStatusService.findByProfileStatus(studentPhone.getProfile_status());
             if (!status.getStatus().equals(ProfileStatusConstants.NOT_REGISTERED)) {
-                throw new InvalidRegisterException("This student is registered, please just sign in");
+                return new ResponseEntity(HttpStatus.ALREADY_REPORTED); //208
             }
         }
         if (studentEmail != null) {
             //тут надо перенаправить на страницу со входом?
-            throw new InvalidRegisterException("This student is registered, please just sign in");
+            return new ResponseEntity(HttpStatus.ALREADY_REPORTED); //208
         }
         Student student = studentService.createStudent(request);
         studentRepository.save(student);
@@ -102,8 +93,8 @@ public class AuthController {
                 email,
                 student.getRoles()
         );
-
-        return ResponseEntity.ok(token);
+        studentService.updateToken(student.getId(), token);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/exit")
