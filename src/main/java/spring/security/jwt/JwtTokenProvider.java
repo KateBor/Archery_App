@@ -36,13 +36,13 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(userName);
         claims.put("roles", roles);
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtProperties.getValidityInMs());
+        //Date now = new Date();
+        //Date validity = new Date(now.getTime() + jwtProperties.getValidityInMs());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
+                //.setIssuedAt(now)
+                //.setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }

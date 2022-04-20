@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MySQL - @localhost" uuid="eb1da8c7-0fa9-4657-a66b-03752f4f53b0">
+    <data-source source="LOCAL" name="paradoks@localhost" uuid="ff373c6c-38f2-46c9-91f6-6c64a0677ad5">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/</jdbc-url>
-      <working-dir>C:\Users\Hp\Desktop\GitHub\Archery_App</working-dir>
+      <jdbc-url>jdbc:mysql://localhost:3306/paradoks</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="FDjXl5FKDt@remotemysql.com" uuid="fe2c3dac-cda9-4def-9620-18ae8697c688">
       <driver-ref>mysql.8</driver-ref>

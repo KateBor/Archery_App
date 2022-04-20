@@ -34,6 +34,8 @@ public class StudentServiceImpl implements StudentService {
     private ProfileStatusService profileStatusService;
     @Autowired
     private PasswordEncoder pwdEncoder;
+    @Autowired
+    private PurchaseHistoryService purchaseHistoryService;
 
     @Override
     public Student createStudent(RegisterRequest request) {
@@ -65,7 +67,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         student.setProfile_status(profileStatusService.findByProfileStatus(ProfileStatusConstants.ON_CHECKING));
-        student.setPassword_hash(pwdEncoder.encode(request.getPassword_hash())); //сохраняем сразу хешированный пароль
+        student.setPassword_hash(pwdEncoder.encode(request.getPassword_hash()));
 
         //обработка даты
         String dateString = request.getBirth_date();
@@ -144,5 +146,55 @@ public class StudentServiceImpl implements StudentService {
         if (optionalStudent.isPresent()) {
             studentRepository.updateToken(id, token);
         }
+    }
+
+    @Override
+    public void updateHasPaid(long student_id, Boolean hasPaid)
+    {
+        if (hasPaid)
+        {
+            studentRepository.updateHasPaid(student_id, true);
+        }
+        studentRepository.updateHasPaid(student_id, false);
+    }
+
+    public Rank getRank(long id)
+    {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent())
+        {
+            return optionalStudent.get().getRank_name();
+        }
+        throw new StudentNotFoundException("Student not found");
+    }
+
+    public Boolean hasPaid(long id)
+    {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent())
+        {
+            return optionalStudent.get().getHasPaid();
+        }
+        throw new StudentNotFoundException("Student not found");
+    }
+
+    public void changeAttendedClasses(Long id, Boolean toIncrease)
+    {
+        if (toIncrease)
+        {
+            studentRepository.increaseAttendedClasses(id);
+            Date date = new Date(); //пока так, потом разбираться с датами и взять актуальную
+            purchaseHistoryService.changeAvailableClassesFromActivePurchase(id, date, true); //в активном абонементе уменьшить
+        } //число доступных занятий
+        else
+        {
+            studentRepository.decreaseAttendedClasses(id); //если админ ошиблась и хочет обратно уменьшить число посещенных занятий
+            Date date = new Date(); //тогда в активном абонементе надо обратно увеличить число доступных занятий
+            if (!purchaseHistoryService.changeAvailableClassesFromActivePurchase(id, date, false)) //если активного абонемента не оказалось
+            { //(например, сбросился, так как число доступных занятий стало равно нулю в результате ошибки, случайного нажатия),
+                purchaseHistoryService.changeAvailableClassesFromLastPurchase(id, false); //то вместо него увеличить число доступных занятий в последнем купленном абонементе
+                studentRepository.updateHasPaid(id, true); //(очевидно, он и был активным)
+            } //тогда нужно обновить поле "оплатил", так как при сбросе активного абонемента оно становится false, а здесь сброс откатили, снова добавив
+        } //доступные занятия в последнем купленном абонементе
     }
 }

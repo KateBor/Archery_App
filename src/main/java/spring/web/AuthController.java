@@ -83,7 +83,6 @@ public class AuthController {
             }
         }
         if (studentEmail != null) {
-            //тут надо перенаправить на страницу со входом?
             return new ResponseEntity(HttpStatus.ALREADY_REPORTED); //208
         }
         Student student = studentService.createStudent(request);

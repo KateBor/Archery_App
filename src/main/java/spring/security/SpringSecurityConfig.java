@@ -34,12 +34,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //не нужно создавать сессию тк храним пользователя по токену
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/archery/auth/signIn").permitAll()
-                .antMatchers(HttpMethod.POST,"/archery/auth/register").permitAll()
+                .antMatchers(HttpMethod.POST,"/archery/auth/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/archery/test/studentList").permitAll()
                 .antMatchers(HttpMethod.PUT,"/archery/auth/exit").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.GET,"/archery/admin/*").hasRole("ADMIN")
-
+                .antMatchers(HttpMethod.POST,"/archery/admin/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/archery/admin/*").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST, "/archery/admin/edit/ranks").permitAll()
+//                .antMatchers(HttpMethod.GET, "/archery/admin/edit/ranks").permitAll()
+//                .antMatchers(HttpMethod.GET, "/archery/admin/timetable/days").permitAll()
                 .anyRequest().authenticated()
                 .and()
 

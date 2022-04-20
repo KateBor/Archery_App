@@ -56,6 +56,9 @@ public class Student implements UserDetails {
     @Column(name = "token_date") //??
     private String token_date;
 
+    @Column(name = "has_paid")
+    private Boolean hasPaid;
+
     @ManyToOne
     @JoinColumn(name="rank_name", referencedColumnName="rank_name")
     @JsonManagedReference
