@@ -191,3 +191,30 @@
     box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.4);
     cursor: pointer;
 }
+
+.container-record-btn {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.modal_add_record {
+    display: flex;
+}
+
+.students {
+    margin-left: 10%;
+}
+
+.shields {
+    margin-right: 10%;
+}
+
+.abonement_type {
+    text-align: center;
+}
