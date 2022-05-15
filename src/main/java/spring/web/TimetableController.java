@@ -11,6 +11,8 @@ import spring.entity.Student;
 import spring.exception.DayNotFoundException;
 import spring.requests.LessonWithEndRequest;
 import spring.requests.LessonRequest;
+import spring.requests.NumberOfStudentsAndShields;
+import spring.requests.SetTimeEndRequest;
 import spring.service.DayService;
 import spring.service.RequestService;
 import spring.service.StudentService;
@@ -60,8 +62,58 @@ public class TimetableController {
         return new ResponseEntity<>(requestService.showInfoAboutSession(student.getId(), date, timeStart), HttpStatus.OK);
     }
 
-    //добавить контроллеры на разбитые методы
 
+    //----------------------------------------------
+
+    @GetMapping("/day/info")
+    public ResponseEntity<NumberOfStudentsAndShields> getInfo(@RequestBody LessonRequest request) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalDate date = LocalDate.parse(request.getDate(), dtf);
+        LocalTime timeStart = LocalTime.parse(request.getTimeStart(), dtf1);
+        return ResponseEntity.ok(requestService.getNumberOfStudentsAndShields(date, timeStart));
+    }
+
+    @GetMapping("/day/isAvailableLesson")
+    public ResponseEntity<HttpStatus> isAvailableLesson(@RequestBody LessonWithEndRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Student student = studentService.findStudentByEmail(auth.getName());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalDate date = LocalDate.parse(request.getDate(), dtf);
+        LocalTime timeStart = LocalTime.parse(request.getTimeStart(), dtf1);
+        LocalTime timeEnd = LocalTime.parse(request.getTimeEnd(), dtf1);
+        if (requestService.isAvailableLesson(student.getId(), date, timeStart, timeEnd)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //406
+    }
+
+    @GetMapping("/day/setTimeEnd")
+    public ResponseEntity<String> setTimeEnd(@RequestBody SetTimeEndRequest request) {
+        String ticket = request.getSeasonTicket();
+        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime timeStart = LocalTime.parse(request.getTimeStart(), dtf1);
+        String time = requestService.setTimeEnd(timeStart, ticket);
+        if (time == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
+        }
+        return ResponseEntity.ok(time);
+    }
+
+    @GetMapping("/day/setSeasonTicket")
+    public ResponseEntity<String> setSeasonTicket(@RequestBody String date) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Student student = studentService.findStudentByEmail(auth.getName());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate localDate = LocalDate.parse(date, dtf);
+        String ticket = requestService.setSeasonTicket(student.getId(), localDate);
+        return ResponseEntity.ok(ticket);
+    }
+
+//------------------------------------------
 
     @PostMapping("/day/lesson/signUp")
     public ResponseEntity<String> signUpLesson(@RequestBody LessonWithEndRequest request) {
