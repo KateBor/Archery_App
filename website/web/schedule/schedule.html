@@ -24,6 +24,7 @@
         a {
             text-decoration: none; /* Убираем подчёркивание */
         }
+        .modal:target {display: block;}
     </style>
 </head>
 
@@ -75,16 +76,16 @@
     </section>
 
     <section class="record">
-        <div class="modal_add_record">
+        <div class="modal" id="modal">
             <h class="recordH">Запись</h>
-            <!-- <div class="students">
-                <p>Новичков:</p>
-                <p>Среднячков:</p>
-                <p>Старших:</p>
+            <div class="students">
+                <p>Новичков: <span id="nov">5</span></p>
+                <p>Среднячков: <span id="mid">5</span></p>
+                <p>Старших: <span id="high">5</span></p>
             </div>
             <div class="shields">
                 <p>Свободных щитов:</p>
-            </div> -->
+            </div>
             <div class="chosen_time">
                 <p>time</p>
             </div>
@@ -98,6 +99,13 @@
                 </button>
             </div>
         </div>
+        <button type="button" onclick="show_modal()">Запись</button>
+        <script>
+            function show_modal() {
+                const modal = document.getElementById("modal")
+                modal.classList.add("modal_active")
+            }
+        </script>
     </section>
 
 

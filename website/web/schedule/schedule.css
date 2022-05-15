@@ -202,8 +202,19 @@
     justify-content: center;
 }
 
-.modal_add_record {
-    display: flex;
+.modal {
+    width: 300px;
+    margin: 10px;
+    text-align: center;
+    padding: 15px;
+    border: 3px solid #BAD4AA;
+    border-radius: 10px;
+    color: #BAD4AA;
+    display: none;
+}
+
+.modal_active {
+    display: block;
 }
 
 .students {
