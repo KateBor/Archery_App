@@ -68,16 +68,16 @@
 
 .container {
     width: 100%;
-    height: 100vh;
+    height: auto;
     color: white;
     display: flex;
     justify-content: center;
-    align-items: center;
+   /* align-items: center;*/
 }
 
 .calendar {
     width: 56vw;
-    height: 80vh;
+    height: auto;
     background-color: #222227;
     box-shadow: 0 0.5rem 3rem rgba(0, 0, 0, 0.4);
 }
@@ -137,18 +137,18 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0.2rem;
+    text-align: center;
 }
 
 .days div {
     font-size: 1.2rem;
-    width: calc( 53.3vw / 7);
-    margin: 0.1rem;
+    width: calc( 55vw/ 7);
     height: 2.5rem;
     display: block;
     justify-content: center;
     align-items: center;
     text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5);
-    transition: background-color 0.2s;
+    transition: background-color 0.1s;
 }
 
 .days div:hover:not(.today) {
@@ -172,20 +172,19 @@
     min-width: 100%;
     min-height: 10px;
     height: 10vh;
-
-}
-#timeWork{
-   display: none;
+    font-weight: 400;
+    text-align: center;
+    display: flex;
 }
 
 .time--content {
-    background-color: #EBF5DF;
-    border-color: grey;
+    background-color:#BAD4AA;
 
     /*min-width: 200px;*/
-    min-width: calc(70vw/8);
+    width: calc(70vw/8);
     /*width: 25%;*/
     margin: 1%;
+    font-size: 1rem;
     box-sizing: border-box;
     border-radius: 2%;
     box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.4);

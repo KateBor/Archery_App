@@ -1,13 +1,11 @@
 document.querySelector('.days').addEventListener('click', function () {
     if (!event.target.classList.contains("next-date") && !event.target.classList.contains("prev-date")) {
-        const t = document.querySelector('#todayid').classList;
-        t.toggle("today");
-        document.querySelector('#todayid').removeAttribute("id");
-
+        if (document.querySelector('#todayid') !== null) {
+            const t = document.querySelector('#todayid').classList;
+            t.toggle("today");
+            document.querySelector('#todayid').removeAttribute("id");
+        }
         event.target.className = "today";
-        /* event.target.style.backgroundColor = '#BAD4AA';
-         event.target.style.color = 'black';*/
-        //event.target.classList.removeAttribute("id");
         event.target.setAttribute("id","todayid");
         var m = document.querySelector(".date h1").innerHTML.valueOf();
         var d = document.querySelector(".today").innerHTML.valueOf();
@@ -15,10 +13,32 @@ document.querySelector('.days').addEventListener('click', function () {
     }
 });
 
-function chpok(){
-    let elem = document.getElementById('timeWork');
-     //смотрим, включен ли сейчас элемент
-    if (elem.style.display === "none"){
-        elem.style.display="";
+
+document.querySelector('.schedule .days').addEventListener('click', function () {
+    cleaar();
+    if (!event.target.classList.contains("next-date") && !event.target.classList.contains("prev-date")) {
+        let time= "";
+        let startTime = 17;
+        let min;
+
+        for (let x = 1; x<=8; x++) { //поменять надо
+            if(x%2 === 1 ){
+                startTime +=1;
+                min = ":00";
+                time += `<div class="time--content">${startTime}${min}</div>`;
+            } else {
+                min = ":30";
+                time += `<div class="time--content">${startTime}${min}</div>`;
+            }
+        }
+
+        var monthDays = document.querySelector(".timeSchedule");
+        for(let x = 1; x<=8; x++){
+            monthDays.innerHTML = time;
+        }
     }
+});
+
+function cleaar() {
+    document.getElementById("timeS").innerHTML = "";
 }
