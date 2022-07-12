@@ -17,33 +17,15 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/archery/{id}/tickets")
+@RequestMapping("/archery/tickets")
 public class SeasonTicketsController
 {
-   /* @Autowired
-    SeasonTicketService seasonTicketService;
     @Autowired
-    PurchaseHistoryService purchaseHistoryService;
+    SeasonTicketService seasonTicketService;
 
     @GetMapping("")
     public ResponseEntity<List<SeasonTicket>> showTicketsForSale()
     {
         return new ResponseEntity<>(seasonTicketService.areForSale(), HttpStatus.OK);
     }
-
-    @GetMapping("/activeticket")
-    public ResponseEntity<String> showActiveTicket(@PathVariable long id)
-    {
-        try
-        {
-            SeasonTicket ticket = purchaseHistoryService.findActiveSeasonTicket(id, LocalDate.now());
-            String stringTicket = ticket.getTicketType() + ticket.getCost() + ticket.getNumberOfClasses()
-                    + ticket.getDaysDuration() + ticket.getTimeDuration();
-            return new ResponseEntity<>(stringTicket, HttpStatus.OK);
-        }
-        catch (SeasonTicketNotFoundException e)
-        {
-            return new ResponseEntity<>("Нет активного абонемента", HttpStatus.OK);
-        }
-    }*/
 }

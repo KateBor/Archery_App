@@ -15,8 +15,10 @@ import java.util.Optional;
 
 @Service
 public class SeasonTicketServiceImpl implements SeasonTicketService {
-    /*@Autowired
+    @Autowired
     private SeasonTicketRepository seasonTicketRepository;
+    @Autowired
+    private PurchaseHistoryRepository purchaseHistoryRepository;
 
     public List<SeasonTicket> findTickets()
     {
@@ -27,47 +29,25 @@ public class SeasonTicketServiceImpl implements SeasonTicketService {
         return seasonTicketRepository.findByIsForSale(true);
     }
 
-
-
-
-
-
     public List<SeasonTicket> areNotForSale()
     {
         return seasonTicketRepository.findByIsForSale(false);
     }
-
-    public LocalTime getTimeDuration(String ticketType)
+    public void addSeasonTicket(SeasonTicket seasonTicket)
     {
-        Optional<SeasonTicket> optionalSeasonTicket = seasonTicketRepository.findByTicketType(ticketType);
-        if (optionalSeasonTicket.isPresent())
-        {
-            return optionalSeasonTicket.get().getTimeDuration();
-        }
-        throw new SeasonTicketNotFoundException("Season ticket is not found");
+        seasonTicketRepository.save(seasonTicket);
     }
-
-    public SeasonTicket addSeasonTicket(SeasonTicket seasonTicket)
-    {
-        return seasonTicketRepository.save(seasonTicket);
-    }
-
     public void changeIfIsForSale(SeasonTicket seasonTicket)
     {
-        if (seasonTicket.getIsForSale())
+        seasonTicketRepository.changeIfIsForSale(seasonTicket.getTicketType(), !seasonTicket.getIsForSale());
+    }
+    public boolean removeTicket(SeasonTicket seasonTicket)
+    {
+        if (purchaseHistoryRepository.findBySeasonTicket(seasonTicket))
         {
-            if (purchaseHistoryRepository.findBySeasonTicket(seasonTicket))
-            {
-                seasonTicket.setIsForSale(false);
-            }
-            else
-            {
-                seasonTicketRepository.removeByTicketType(seasonTicket.getTicketType());
-            }
+            return false;
         }
-        else
-        {
-            seasonTicket.setIsForSale(true);
-        }
-    }*/
+        seasonTicketRepository.removeByTicketType(seasonTicket.getTicketType());
+        return true;
+    }
 }
