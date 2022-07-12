@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 
+import static spring.Application.*;
+
 @Component
 @RequiredArgsConstructor
 public class ClassForAddingDays
@@ -48,16 +50,10 @@ public class ClassForAddingDays
         {
             LocalDate date = LocalDate.of(year, month.getValue(), i);
             day.setDate(date);
-            if (date.getDayOfWeek().getValue() > 5)
-            {
-                day.setAreLessons(false);
-                day.setTimeStart(LocalTime.of(23, 59));
-                day.setTimeEnd((LocalTime.of(0, 0)));
-            } else {
-                day.setAreLessons(true);
-                day.setTimeStart(LocalTime.of(18, 0));
-                day.setTimeEnd((LocalTime.of(22, 0)));
-            }
+            int dayOfWeek = date.getDayOfWeek().getValue();
+            day.setAreLessons(areLessons[dayOfWeek - 1]);
+            day.setTimeStart(beginnings[dayOfWeek - 1]);
+            day.setTimeEnd(ends[dayOfWeek - 1]);
             dayService.addDay(day);
         }
     }

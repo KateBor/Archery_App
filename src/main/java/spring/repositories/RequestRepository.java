@@ -38,6 +38,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Transactional
     @Modifying
     void removeByRequestId(Long requestId);
+    @Query("select r from Request r where r.day.date > :date")
+    List<Request> findAllRequestsWithFutureDays(LocalDate date);
     @Query("select r from Request r where r.student.id = :id and r.day.date > :date")
     List<Request> findRequestsWithFutureDays(Long id, LocalDate date);
     @Query("select r from Request r where r.student.id = :id and r.day.date = :date and r.timeStart <= :timeStart and r.timeEnd >= :timeEnd")

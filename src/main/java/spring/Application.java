@@ -24,13 +24,13 @@ public class Application {
     public static int wishedNumberOfJuniors = 5;
     public static int wishedNumberOfDemandingTrainer = 7;
     public static LocalTime lenghtOfMasterClass = LocalTime.of(2, 0);
-   /* public static LocalTime[] beginnings = new LocalTime[] {LocalTime.of(18, 0), LocalTime.of(18, 0),
+    public static LocalTime[] beginnings = new LocalTime[] {LocalTime.of(18, 0), LocalTime.of(18, 0),
             LocalTime.of(18, 0), LocalTime.of(18, 0), LocalTime.of(18, 0),
             LocalTime.of(23, 59), LocalTime.of(23, 59)};
-    public static LocalTime[] ends = new LocalTime[] {LocalTime.of(21, 0), LocalTime.of(21, 0),
-            LocalTime.of(21, 0), LocalTime.of(21, 0), LocalTime.of(21, 0),
+    public static LocalTime[] ends = new LocalTime[] {LocalTime.of(22, 0), LocalTime.of(22, 0),
+            LocalTime.of(22, 0), LocalTime.of(22, 0), LocalTime.of(22, 0),
             LocalTime.of(0, 0), LocalTime.of(0, 0)};
-    public static Boolean[] areLessons = new Boolean[] {true, true, true, true, true, false, false};*/
+    public static Boolean[] areLessons = new Boolean[] {true, true, true, true, true, false, false};
 
     public static void main(String[] args)
     {

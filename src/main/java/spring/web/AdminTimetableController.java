@@ -3,17 +3,13 @@ package spring.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.entity.Day;
 import spring.entity.Request;
-import spring.entity.SeasonTicket;
 import spring.entity.Student;
-import spring.exception.DayNotFoundException;
+import spring.repositories.DayRepository;
 import spring.repositories.RequestRepository;
-import spring.requests.LessonRequest;
-import spring.requests.StudentAndDateRequest;
+import spring.requests.*;
 import spring.service.DayService;
 import spring.service.PurchaseHistoryService;
 import spring.service.RequestService;
@@ -23,8 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import static spring.Application.*;
 
 @RestController
 @RequestMapping("/archery/admin/timetable")
@@ -40,6 +37,84 @@ public class AdminTimetableController
     private StudentService studentService;
     @Autowired
     private RequestRepository requestRepository;
+    @Autowired
+    private DayRepository dayRepository;
+
+    @PostMapping("/edit/removelessons")
+    public ResponseEntity<String> editTimetableByRemoving(@RequestBody int dayOfWeek)
+    {
+        areLessons[dayOfWeek - 1] = false;
+        List<Request> futureRequests = requestRepository.findAllRequestsWithFutureDays(LocalDate.now());
+        for (Request request: futureRequests)
+        {
+            if (request.getDay().getDate().getDayOfWeek().getValue() == dayOfWeek)
+            {
+                requestRepository.removeByRequestId(request.getRequestId());
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/edit/changedaytimetable")
+    public ResponseEntity<String> editTimetableByChanging(@RequestBody EditDayOfWeekRequest editDayOfWeekRequest)
+    {
+        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm");
+        int i = editDayOfWeekRequest.getDayOfWeek();
+        beginnings[i - 1] = LocalTime.parse(editDayOfWeekRequest.getBeginning(), dtf1);
+        ends[i - 1] = LocalTime.parse(editDayOfWeekRequest.getEnd(), dtf1);
+        areLessons[i - 1] = true;
+        List<Request> futureRequests = requestRepository.findAllRequestsWithFutureDays(LocalDate.now());
+        for (Request request: futureRequests)
+        {
+            if (request.getDay().getDate().getDayOfWeek().getValue() == i)
+            {
+                requestRepository.removeByRequestId(request.getRequestId());
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/day/edit")
+    public ResponseEntity<HowToEditDayInfoRequest> canEditDay(@RequestBody String date)
+    {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate localDate = LocalDate.parse(date, dtf);
+        HowToEditDayInfoRequest howToEditDayInfoRequest = new HowToEditDayInfoRequest(false, false);
+        if (!LocalDate.now().isBefore(localDate))
+        {
+            return new ResponseEntity<>(howToEditDayInfoRequest, HttpStatus.OK);
+        }
+        howToEditDayInfoRequest.setCanEdit(true);
+        Day day = dayService.findByDate(localDate);
+        if (day.getAreLessons())
+        {
+            howToEditDayInfoRequest.setRemovingBottom(true);
+        }
+        return new ResponseEntity<>(howToEditDayInfoRequest, HttpStatus.OK);
+    }
+
+    @PostMapping("/day/edit/removelessons")
+    public void removeLessons(@RequestBody String date)
+    {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate localDate = LocalDate.parse(date, dtf);
+        requestRepository.removeByDayDate(localDate);
+        dayRepository.removeAreLessons(localDate);
+    }
+
+    @PostMapping("day/edit/changedaytimetable")
+    public void editDay(@RequestBody EditDayRequest editDayRequest)
+    {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate localDate = LocalDate.parse(editDayRequest.getDate(), dtf);
+        requestRepository.removeByDayDate(localDate);
+        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm");
+        dayRepository.updateDayTimetable(localDate, LocalTime.parse(editDayRequest.getTimeStart()),
+                LocalTime.parse(editDayRequest.getTimeEnd(), dtf1));
+    }
+
+
+
 
     @GetMapping("/day/students")
     public ResponseEntity<List<Student>> showStudentsAtDay(@RequestBody String date)
