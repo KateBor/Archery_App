@@ -25,7 +25,6 @@ public class ClassForAddingDays
     @Scheduled(cron = "0 0 0 28 * ?", zone = "GMT+3")
     public void addDay()
     {
-        Day day = new Day();
         int year = LocalDate.now().getYear();
         Month month =  LocalDate.now().getMonth();
         if (month.getValue() == 12)
@@ -49,6 +48,7 @@ public class ClassForAddingDays
         for (int i = 1; i <= length; ++i)
         {
             LocalDate date = LocalDate.of(year, month.getValue(), i);
+            Day day = new Day();
             day.setDate(date);
             int dayOfWeek = date.getDayOfWeek().getValue();
             day.setAreLessons(areLessons[dayOfWeek - 1]);

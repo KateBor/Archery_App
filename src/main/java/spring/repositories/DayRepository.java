@@ -34,6 +34,9 @@ public interface DayRepository extends JpaRepository<Day, String>
     @Query("update Day d set d.areLessons = true, d.timeStart = :timeStart, d.timeEnd = :timeEnd where d.date = :date")
     void updateDayTimetable(LocalDate date, LocalTime timeStart, LocalTime timeEnd);
 
+    @Query("select d from Day d where d.date > :date")
+    List<Day> findFutureDays(LocalDate date);
+
 
     //Boolean findByDateAndAreLessons(LocalDate date, Boolean areLessons);
 }

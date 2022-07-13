@@ -52,6 +52,15 @@ public class AdminTimetableController
                 requestRepository.removeByRequestId(request.getRequestId());
             }
         }
+        List<Day> futureDays = dayRepository.findFutureDays(LocalDate.now());
+        for (Day day: futureDays)
+        {
+            if (day.getDate().getDayOfWeek().getValue() == dayOfWeek)
+            {
+                dayRepository.removeAreLessons(day.getDate());
+            }
+
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -59,16 +68,26 @@ public class AdminTimetableController
     public ResponseEntity<String> editTimetableByChanging(@RequestBody EditDayOfWeekRequest editDayOfWeekRequest)
     {
         DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm");
-        int i = editDayOfWeekRequest.getDayOfWeek();
-        beginnings[i - 1] = LocalTime.parse(editDayOfWeekRequest.getBeginning(), dtf1);
-        ends[i - 1] = LocalTime.parse(editDayOfWeekRequest.getEnd(), dtf1);
-        areLessons[i - 1] = true;
+        int dayOfWeek = editDayOfWeekRequest.getDayOfWeek();
+        LocalTime beginning = LocalTime.parse(editDayOfWeekRequest.getBeginning(), dtf1);
+        LocalTime end = LocalTime.parse(editDayOfWeekRequest.getEnd(), dtf1);
+        beginnings[dayOfWeek - 1] = beginning;
+        ends[dayOfWeek - 1] = end;
+        areLessons[dayOfWeek - 1] = true;
         List<Request> futureRequests = requestRepository.findAllRequestsWithFutureDays(LocalDate.now());
         for (Request request: futureRequests)
         {
-            if (request.getDay().getDate().getDayOfWeek().getValue() == i)
+            if (request.getDay().getDate().getDayOfWeek().getValue() == dayOfWeek)
             {
                 requestRepository.removeByRequestId(request.getRequestId());
+            }
+        }
+        List<Day> futureDays = dayRepository.findFutureDays(LocalDate.now());
+        for (Day day: futureDays)
+        {
+            if (day.getDate().getDayOfWeek().getValue() == dayOfWeek)
+            {
+                dayRepository.updateDayTimetable(day.getDate(), beginning, end);
             }
         }
         return new ResponseEntity<>(HttpStatus.OK);
