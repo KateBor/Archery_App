@@ -9,7 +9,9 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LessonRequest implements Serializable{
-    private String date;
-    private String timeStart;
+public class NumberOfStudentsAndShields implements Serializable {
+    private int juniors;
+    private int middles;
+    private int seniors;
+    private int shields;
 }

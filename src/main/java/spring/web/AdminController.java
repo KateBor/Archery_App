@@ -31,10 +31,13 @@ public class AdminController {
 
     @PostMapping(value = "/setRankAndApprove")
     public ResponseEntity<HttpStatus> setRankAndApprove(@RequestBody UpdateRankRequest request) {
-        long id = Long.parseLong(request.getStudent_id());
+        long id = request.getId();
+        System.out.println(id);
         try {
             studentService.updateRank(id, request.getRank());
+            System.out.println("Rank is updated");
             studentService.updateProfileStatus(id, Constants.ProfileStatusConst.APPROVED);
+            System.out.println("Profile status is updated");
         } catch (StudentNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
         }

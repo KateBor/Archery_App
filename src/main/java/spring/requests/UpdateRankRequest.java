@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 public class UpdateRankRequest implements Serializable {
-    private String student_id;
+    private long id;
     private String rank;
 }

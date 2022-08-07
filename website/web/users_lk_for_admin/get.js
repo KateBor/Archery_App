@@ -29,14 +29,9 @@ async function fetchWithAuth(url, options) {
     var access_t = null;
     var expires = null;
     if (localStorage.tokenData) {
-        // console.log("token exist");
         tokenData_t = localStorage.tokenData;
-        // console.log(localStorage.tokenData);
         access_t = JSON.parse(localStorage.getItem('tokenData'));
-        // console.log(access_t);
         expires = JSON.parse(localStorage.getItem('expiresIn'));
-        // console.log(expires);
-
     } else {
         console.log("localStorage.authToken = null");
         return window.location.replace(loginUrl);
@@ -63,7 +58,8 @@ async function fetchWithAuth(url, options) {
     return fetch(url, options);
 }
 
-function getData(url, field_id) {
+function getUsersData() {
+    let url = `http://localhost:8080/archery/admin/students/id/${localStorage.user_id}`;
     fetchWithAuth(url,
         {
             method: 'GET',
@@ -71,27 +67,26 @@ function getData(url, field_id) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            }
-        }).then(response => {
-        return response.text();
+            },
+        }).then((res) => {
+        return res.json();
     }).then(data => {
-        document.getElementById(field_id).value = data;
-        // console.log(data);
+        document.getElementById("inputFirstname").value = data.first_name;
+        document.getElementById("inputLastName").value = data.last_name;
+        document.getElementById("inputEmailAddress").value = data.email;
+        document.getElementById("inputPhone").value = data.phone_number;
+        document.getElementById("inputBirthday").value = data.birth_date.substring(0, 10);
+        document.getElementById("attendedClasses").value = data.attended_classes;
     }).catch(err => {
-        // alert("Fail");
         console.log(err);
     });
+
 }
 
-getData("http://localhost:8080/archery/profile/getFirstName", 'inputFirstname');
-getData("http://localhost:8080/archery/profile/getLastName", 'inputLastName');
-getData("http://localhost:8080/archery/profile/getEmail", 'inputEmailAddress');
-getData("http://localhost:8080/archery/profile/getPhoneNumber", 'inputPhone');
-getData("http://localhost:8080/archery/profile/getBirthDate", 'inputBirthday');
-getData("http://localhost:8080/archery/profile/getAttendedClasses", 'attendedClasses');
+getUsersData();
 
-function getTicket() {
-    fetchWithAuth("http://localhost:8080/archery/profile/getTicket",
+function getData(url, field_id) {
+    fetchWithAuth(url,
         {
             method: 'GET',
             credentials: 'include',
@@ -111,11 +106,10 @@ function getTicket() {
         } else if (data.ticketType == "") {
             document.getElementById('ticket').value = "Нет";
         }
-        // console.log(data);
     }).catch(err => {
         // alert("Fail");
         console.log(err);
     });
 }
 
-getTicket();
+getData(`http://localhost:8080/archery/admin/students/ticket/${localStorage.user_id}`, 'ticket');

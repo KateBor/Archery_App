@@ -52,6 +52,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     @Transactional
     @Modifying
+    @Query("delete from Request r where r.student.id = ?1 and r.day.date = ?2 and r.timeStart = ?3")
     void removeByStudentIdAndDayDateAndTimeStart(Long id, LocalDate date, LocalTime timeStart);
 
     Boolean existsByStudentIdAndDayDate(Long studentId, LocalDate date);

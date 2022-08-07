@@ -73,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
         }                           //разобраться как отправлять письмо на почту с подтверждением
 
         student.setProfile_status(profileStatusService.findByProfileStatus(Constants.ProfileStatusConst.ON_CHECKING));
-        student.setRank_name(rankService.findByRankName(Constants.RankConst.NOT_SELECT));
+        student.setRank_name(rankService.findByRankName(Constants.RankConst.NO_RANK));
         student.setRoles(Collections.singletonList("ROLE_USER"));
         student.setPassword_hash(pwdEncoder.encode(request.getPassword_hash()));
 
