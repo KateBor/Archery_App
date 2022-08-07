@@ -65,26 +65,33 @@ public class AdminTimetableController
     }
 
     @PostMapping("/edit/changedaytimetable")
+    //в EditDayOfWeekRequest хранятся номер дня недели, желаемое начало занятий и желаемый конец занятий
     public ResponseEntity<String> editTimetableByChanging(@RequestBody EditDayOfWeekRequest editDayOfWeekRequest)
     {
         DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm");
         int dayOfWeek = editDayOfWeekRequest.getDayOfWeek();
         LocalTime beginning = LocalTime.parse(editDayOfWeekRequest.getBeginning(), dtf1);
         LocalTime end = LocalTime.parse(editDayOfWeekRequest.getEnd(), dtf1);
+        //изменить расписание; это массивы по 7 ячеек, каждая ячейка в которых соответствует конкретному дню недели; массивы используются для добавления
+        //новых дней каждый месяц; из конкретной ячейки, в зависимости от дня недели, берутся начало занятий и прочие параметры и добавляются в нужный день:
         beginnings[dayOfWeek - 1] = beginning;
         ends[dayOfWeek - 1] = end;
         areLessons[dayOfWeek - 1] = true;
+        //найти все будущие заявки:
         List<Request> futureRequests = requestRepository.findAllRequestsWithFutureDays(LocalDate.now());
         for (Request request: futureRequests)
         {
+            //те, в которых день недели такой же, - удалить
             if (request.getDay().getDate().getDayOfWeek().getValue() == dayOfWeek)
             {
                 requestRepository.removeByRequestId(request.getRequestId());
             }
         }
+        //найти будущие дни
         List<Day> futureDays = dayRepository.findFutureDays(LocalDate.now());
         for (Day day: futureDays)
         {
+            //те, в которых день недели такой же, - изменить, обновив поля начала и конца занятий
             if (day.getDate().getDayOfWeek().getValue() == dayOfWeek)
             {
                 dayRepository.updateDayTimetable(day.getDate(), beginning, end);
