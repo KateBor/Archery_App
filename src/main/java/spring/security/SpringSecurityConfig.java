@@ -47,11 +47,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/archery/auth/exit").hasAnyRole("ADMIN", "USER")
 
                 .antMatchers(HttpMethod.GET, "/archery/test/studentList").permitAll()
-                .antMatchers(HttpMethod.GET, "/archery/admin/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/archery/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/archery/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/archery/profile/*").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.POST, "/archery/profile/updateAll").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.GET, "/archery/timetable/*").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/archery/timetable/*").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/archery/timetable").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/archery/timetable/day").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/archery/timetable/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/archery/timetable/**").hasRole("USER")
 
                 .anyRequest().authenticated()
                 .and()

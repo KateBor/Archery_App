@@ -18,13 +18,13 @@
     <!--        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Security</a>-->
     <!--        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page" target="__blank">Notifications</a>-->
     <!--    </nav>-->
-    <button class="home-form-btn" type="button" onclick="location.href = '../index2.html'">
-        <a class="txt3">
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary col-xl-1" type="button" onclick="location.href = '../index2.html'">
             Home page
-        </a>
-    </button>
+        </button>
+    </div>
 
-    <hr class="mt-0 mb-4">
+    <hr class=" mb-4">
     <div class="row">
         <div class="col-xl-4">
             <!-- Profile picture card-->
@@ -47,16 +47,17 @@
                 <div class="card-header">Account Details</div>
                 <div class="card-body">
                     <form>
-                        <!-- Form Group (username)-->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputFirstname">First name</label>
-                            <input class="form-control" id="inputFirstname" type="text"
-                                   placeholder="Enter your username"
-                                   value="">
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstname">First name</label>
+                                <input class="form-control" id="inputFirstname" type="text"
+                                       placeholder="Enter your first name" value="">
+                            </div>
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (first name)-->
+                            <!-- Form Group (last name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLastName">Last name</label>
                                 <input class="form-control" id="inputLastName" type="text"
@@ -70,7 +71,7 @@
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Email address</label>
                             <input class="form-control" id="inputEmailAddress" type="email"
-                                   placeholder="Enter your email address" value="">
+                                   placeholder="Enter your email address" value="" disabled>
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">
@@ -87,6 +88,18 @@
                                        placeholder="Enter your birthday" value="">
                             </div>
                         </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="attendedClasses">Посещенные занятия</label>
+                                <input class="form-control" id="attendedClasses" type="text" name="attended_classes"
+                                       value="" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="ticket">Абонемент</label>
+                                <input class="form-control" id="ticket" type="text" name="ticket"
+                                       value="" disabled>
+                            </div>
+                        </div>
                         <!-- Save changes button-->
                         <button class="btn btn-primary" type="submit" onclick="save_changes()">Save changes</button>
                     </form>
@@ -95,6 +108,8 @@
         </div>
     </div>
 </div>
+
+
 </body>
 <script defer src="get.js"></script>
 <script src="post.js"></script>

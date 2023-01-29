@@ -64,7 +64,6 @@ async function fetchWithAuth(url, options) {
 }
 
 
-//нужен запрос, это пока скелет
 function save_changes() {
     var firstname = document.getElementById('inputFirstname').value;
     var lastName = document.getElementById('inputLastName').value;

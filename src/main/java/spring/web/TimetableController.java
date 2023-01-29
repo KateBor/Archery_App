@@ -29,13 +29,13 @@ public class TimetableController
     private final RequestService requestService;
     private final StudentService studentService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<LocalDate>> showTimetable() {
         return new ResponseEntity<>(dayService.showMonth(), HttpStatus.OK);
     }
 
     @GetMapping("/day")
-    public ResponseEntity<Boolean> showDay(@RequestParam String date) //вроде можно из js пересылать USVString, либо сделать обертку
+    public ResponseEntity<Boolean> showDay(@RequestBody String date) //вроде можно из js пересылать USVString, либо сделать обертку
     {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate localDate = LocalDate.parse(date, dtf);

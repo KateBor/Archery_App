@@ -45,15 +45,20 @@ public class InitiateUtils implements CommandLineRunner {
 //        rankRepository.deleteAll();
 //
         System.out.println("список статусов");
-        for(ProfileStatus ps : profileStatusService.getStatusList()) {
+        for (ProfileStatus ps : profileStatusService.getStatusList()) {
             System.out.println(ps.toString());
         }
 //
 //        System.out.println("пытаемся зарегистрироваться");
-        //studentRepository.deleteById(11L);
+//        studentRepository.deleteById(43L);
+//        studentRepository.deleteById(44L);
+//        studentRepository.deleteById(45L);
+//        studentRepository.deleteById(46L);
+//        studentRepository.deleteById(47L);
+//        rankRepository.deleteById("notSelect"); //не сработало из-за внешней связи
 //        studentRepository.save(studentService.createStudent(new RegisterRequest("Kate", "Borisova", "89171124120", "kate_boriso2002@mail.ru", "04.04.2002", "pwd")));
 //
-        
+
 //        System.out.println("создаем аккаунт админа");
 //        RegisterRequest request = new RegisterRequest("admin", "admin", "89500308212", "paradox@mail.ru", "1985-03-02", "pwd");
 //        Student student = studentService.createStudent(request);
@@ -61,8 +66,7 @@ public class InitiateUtils implements CommandLineRunner {
 //        studentRepository.save(student);
 
 
-
-        for (Student st :studentService.getAllStudents()) {
+        for (Student st : studentService.getAllStudents()) {
             System.out.println(st.toString());
         }
     }

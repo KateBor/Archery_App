@@ -78,7 +78,7 @@ function getData(url, field_id) {
         document.getElementById(field_id).value = data;
         // console.log(data);
     }).catch(err => {
-        alert("Fail");
+        // alert("Fail");
         console.log(err);
     });
 }
@@ -88,4 +88,34 @@ getData("http://localhost:8080/archery/profile/getLastName", 'inputLastName');
 getData("http://localhost:8080/archery/profile/getEmail", 'inputEmailAddress');
 getData("http://localhost:8080/archery/profile/getPhoneNumber", 'inputPhone');
 getData("http://localhost:8080/archery/profile/getBirthDate", 'inputBirthday');
+getData("http://localhost:8080/archery/profile/getAttendedClasses", 'attendedClasses');
 
+function getTicket() {
+    fetchWithAuth("http://localhost:8080/archery/profile/getTicket",
+        {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+        return response.json();
+    }).then(data => {
+        if (data.ticketType == "long limit") {
+            document.getElementById('ticket').value = "На 8 занятий";
+        } else if (data.ticketType == "short limit") {
+            document.getElementById('ticket').value = "На 4 занятий";
+        } else if (data.ticketType == "unlimited") {
+            document.getElementById('ticket').value = "Безлимитный";
+        } else if (data.ticketType == "") {
+            document.getElementById('ticket').value = "Нет";
+        }
+        // console.log(data);
+    }).catch(err => {
+        // alert("Fail");
+        console.log(err);
+    });
+}
+
+getTicket();

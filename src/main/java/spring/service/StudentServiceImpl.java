@@ -73,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
         }                           //разобраться как отправлять письмо на почту с подтверждением
 
         student.setProfile_status(profileStatusService.findByProfileStatus(Constants.ProfileStatusConst.ON_CHECKING));
-        student.setRank_name(rankService.findByRankName(Constants.RankConst.NOT_SELECT));
+        student.setRank_name(rankService.findByRankName(Constants.RankConst.NO_RANK));
         student.setRoles(Collections.singletonList("ROLE_USER"));
         student.setPassword_hash(pwdEncoder.encode(request.getPassword_hash()));
 
@@ -277,17 +277,16 @@ public class StudentServiceImpl implements StudentService {
         if (toIncrease) {
             studentRepository.increaseAttendedClasses(id);
             LocalDate date = LocalDate.now();
-            purchaseHistoryService.changeAvailableClassesFromActivePurchase(id, date, true); //в активном абонементе уменьшить
-        } //число доступных занятий
+            purchaseHistoryService.changeAvailableClassesFromActivePurchase(id, date, true); //в активном абонементе уменьшить число доступных занятий
+        }
         else {
             studentRepository.decreaseAttendedClasses(id); //если админ ошиблась и хочет обратно уменьшить число посещенных занятий
             LocalDate date = LocalDate.now(); //тогда в активном абонементе надо обратно увеличить число доступных занятий
             if (!purchaseHistoryService.changeAvailableClassesFromActivePurchase(id, date, false)) //если активного абонемента не оказалось
             { //(например, сбросился, так как число доступных занятий стало равно нулю в результате ошибки, случайного нажатия),
                 purchaseHistoryService.changeAvailableClassesFromLastPurchase(id, false); //то вместо него увеличить число доступных занятий в последнем купленном абонементе
-                //studentRepository.updateHasPaid(id, true); //(очевидно, он и был активным)
-            } //тогда нужно обновить поле "оплатил", так как при сбросе активного абонемента оно становится false, а здесь сброс откатили, снова добавив
-        } //доступные занятия в последнем купленном абонементе
+            }
+        }
     }
 
 

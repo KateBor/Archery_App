@@ -7,11 +7,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import spring.entity.PurchaseHistory;
 import spring.entity.Student;
+import spring.exception.PurchaseNotFoundException;
 import spring.exception.StudentNotFoundException;
 import spring.requests.AuthRequest;
+import spring.requests.TicketInfoRequest;
 import spring.requests.UpdateProfileRequest;
 import spring.security.jwt.JwtTokenProvider;
+import spring.service.PurchaseHistoryService;
 import spring.service.SecurityService;
 import spring.service.StudentService;
 
@@ -19,6 +23,7 @@ import javax.management.remote.JMXAuthenticator;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
@@ -31,6 +36,8 @@ public class ProfileController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     SecurityService securityService;
+    @Autowired
+    PurchaseHistoryService purchaseHistoryService;
 
     @GetMapping(value = "/getFirstName")
     public ResponseEntity<String> getFirstName(Authentication auth) {
@@ -139,6 +146,27 @@ public class ProfileController {
         }
     }
 
+    @GetMapping(value = "/getTicket")
+    public ResponseEntity<TicketInfoRequest> getTicket(Authentication auth) {
+        if (auth == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); //401
+        }
+        try {
+            Student student = studentService.findStudentByEmail(auth.getName());
+            String ticket = "";
+            TicketInfoRequest ticketInfoRequest = new TicketInfoRequest("", 0);
+            try
+            {
+                PurchaseHistory purchaseHistory = purchaseHistoryService.findPurchaseWithActiveSeasonTicket(student.getId(), LocalDate.now());
+                ticketInfoRequest.setTicketType(purchaseHistory.getSeasonTicket().getTicketType());
+                ticketInfoRequest.setAvailableClasses(purchaseHistory.getAvailableClasses());
+            }
+            catch (PurchaseNotFoundException ignored) {}
+            return ResponseEntity.ok(ticketInfoRequest);
+        } catch (StudentNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
+        }
+    }
 
     @PostMapping(value = "/updateAll", consumes = "application/json")
     public ResponseEntity<String> updateAll(@RequestBody UpdateProfileRequest request) {

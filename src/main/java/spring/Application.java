@@ -20,10 +20,7 @@ import java.util.stream.Stream;
 @SpringBootApplication
 @EnableScheduling
 public class Application {
-    public static int numberOfShields = 12;
-    public static int wishedNumberOfJuniors = 5;
-    public static int wishedNumberOfDemandingTrainer = 7;
-    public static LocalTime lenghtOfMasterClass = LocalTime.of(2, 0);
+
    /* public static LocalTime[] beginnings = new LocalTime[] {LocalTime.of(18, 0), LocalTime.of(18, 0),
             LocalTime.of(18, 0), LocalTime.of(18, 0), LocalTime.of(18, 0),
             LocalTime.of(23, 59), LocalTime.of(23, 59)};

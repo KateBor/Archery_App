@@ -16,6 +16,7 @@ import java.util.Optional;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
+    List<Request> findByStudentId(Long studentId);
     List<Request> findByDayDateAndTimeStartAndTimeEnd(LocalDate date, LocalTime timeStart, LocalTime timeEnd);
     Boolean existsByStudentIdAndDayDateAndTimeStartAndTimeEnd(Long studentId, LocalDate date, LocalTime timeStart, LocalTime timeEnd);
     @Query("select r from Request r where r.day.date = ?1 and ((r.timeStart >= ?2 and r.timeStart <= ?3) or (r.timeEnd >= ?2 and r.timeEnd <= ?3) or (r.timeStart < ?2 and r.timeEnd > ?3))")
@@ -37,14 +38,24 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Transactional
     @Modifying
     void removeByRequestId(Long requestId);
-    @Query("select r from Request r where r.day.date >= :date")
-    List<Request> findFutureRequests(LocalDate date);
+    @Query("select r from Request r where r.student.id = :id and r.day.date > :date")
+    List<Request> findRequestsWithFutureDays(Long id, LocalDate date);
     @Query("select r from Request r where r.student.id = :id and r.day.date = :date and r.timeStart <= :timeStart and r.timeEnd >= :timeEnd")
     Optional<Request> findIfAPartOfStudentRequest(Long id, LocalDate date, LocalTime timeStart, LocalTime timeEnd);
 
+
     @Transactional
     @Modifying
+    void removeByStudentIdAndDayDate(Long studentId, LocalDate date);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Request r where r.student.id = ?1 and r.day.date = ?2 and r.timeStart = ?3")
     void removeByStudentIdAndDayDateAndTimeStart(Long id, LocalDate date, LocalTime timeStart);
 
     Boolean existsByStudentIdAndDayDate(Long studentId, LocalDate date);
+
+    @Transactional
+    @Modifying
+    void removeByDayDate(LocalDate date);
 }

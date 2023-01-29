@@ -14,11 +14,25 @@ function login() {
         if (req.status !== 200) {
             alert("Wrong email or password, please try again");
         } else {
+
+            console.log(req);
             console.log("Status is 200");
             setToken(req);
             console.log(JSON.parse(localStorage.getItem('tokenData')));
             console.log(JSON.parse(localStorage.getItem('expiresIn')));
             document.location.href = "../index2.html";
+
+            // let jwt = JSON.parse(localStorage.getItem('tokenData'));
+            // let jwtData = jwt.split('.')[1]
+            // let decodedJwtJsonData = window.atob(jwtData)
+            // let decodedJwtData = JSON.parse(decodedJwtJsonData)
+            //
+            // let isAdmin = decodedJwtData.roles
+            //
+            // console.log('jwtData: ' + jwtData)
+            // console.log('decodedJwtJsonData: ' + decodedJwtJsonData)
+            // console.log('decodedJwtData: ' + decodedJwtData)
+            // console.log('Is admin: ' + isAdmin)
         }
     }
     req.send(JSON.stringify({login: user, password: pass}));

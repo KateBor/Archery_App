@@ -25,11 +25,14 @@ public interface RequestService {
     List<Request> findByStudentIdAndDate(Long studentId, LocalDate date);
 
     Boolean existsByStudentIdAndDate(Long studentId, LocalDate date);
-    List<Day> findActiveDaysWithRequests(Long studentId, LocalDate date);
+    List<LocalDate> findDaysWithActiveRequests(Long studentId);
+
+
+    Boolean checkIfTodayRequestIsActive(Long studentId);
 
 
 
-
+    List<String> showShortInfoAboutSession(LocalDate date, LocalTime timeStart);
     List<String> showInfoAboutSession(Long studentId, LocalDate date, LocalTime timeStart);
     void addRequest(Long studentId, LocalDate date, LocalTime timeStart, LocalTime timeEnd);
     void removeByStudentIdAndDateTimeStart(Long studentId, LocalDate date, LocalTime timeStart);

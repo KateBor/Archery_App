@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="./list.css">
+    <link rel="stylesheet" type="text/css" href="../../registration/vendor/bootstrap/css/Bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../registration/css/Main.css">
+    <link rel="stylesheet" href="../popup/hystModal/src/hystmodal.css">
+    <link rel="stylesheet" href="../popup/popup.css">
+
+    <title>User list</title>
+</head>
+<body>
+
+<div class="fxied-el">
+    <div class=" scr3__wrap flexi">
+        <button class="button demobuttons" type="button" onclick="location.href = '../../index2.html'">Домашняя
+            страница
+        </button>
+        <button class="button demobuttons" type="button" onclick="location.href = '../admin_lk.html'">Личный кабинет
+        </button>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 100px">
+
+    <div class="row">
+        <div class="col-lg-12 card-margin">
+            <div class="card search-form">
+                <div class="card-body p-0">
+                    <form id="search-form">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row no-gutters">
+<!--                                    <div class="form-control col-lg-2 col-md-3 col-sm-12 p-0">-->
+<!--                                        <select id="ranks_selector" onchange="search_ranks()">-->
+<!--                                            <option value="">All ranks</option>-->
+<!--                                            <option value="juniors">juniors</option>-->
+<!--                                            <option value="middles">middles</option>-->
+<!--                                            <option value="seniors">seniors</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+                                    <div class="form-control col-lg-2 col-md-3 col-sm-12 p-0">
+                                        <!--<label>Requests Per Page: </label>-->
+                                        <table id="req_per_page">
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-9 col-md-6 col-sm-12 p-0">
+                                        <input type="text" placeholder="Search..." class="form-control" id="search"
+                                               name="search" onkeyup="search_by_names()">
+                                    </div>
+                                    <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                                        <button type="button" class="btn btn-base">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-search">
+                                                <circle cx="11" cy="11" r="8"></circle>
+                                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-margin">
+                <div class="card-body">
+                    <div class="row search-body">
+                        <div class="col-lg-12">
+                            <div class="search-result">
+                                <div class="result-body">
+                                    <div class="table-responsive">
+                                        <table class="table widget-26" id="users">
+                                            <tbody>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box pagination">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="fxied-el2" data-hystfixed>
+    <div class="container">
+        <div class="scr3__wrap flexi">
+            <button class="button demobuttons" data-hystmodal="#modalSimple">Новые пользователи</button>
+        </div>
+    </div>
+</div>
+
+<div class="hystmodal" id="modalSimple" aria-hidden="true">
+    <div class="hystmodal__wrap">
+        <div class="hystmodal__window" role="dialog" aria-modal="true">
+            <button class="hystmodal__close" data-hystclose>Закрыть</button>
+            <div class="hystmodal__styled">
+                <label>Новые пользователи: </label>
+                <table id="new_users_table">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../popup/hystModal/dist/hystmodal.min.js"></script>
+<script>
+    const myModal = new HystModal({
+        // for dynamic init() of modals
+        // linkAttributeName: false,
+        catchFocus: true,
+        closeOnEsc: true,
+        backscroll: true,
+        beforeOpen: function (modal) {
+            console.log('Message before opening the modal');
+            console.log(modal); //modal window object
+            new_users();
+        },
+        afterClose: function (modal) {
+            console.log('Message after modal has closed');
+            console.log(modal); //modal window object
+        },
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="./list.js"></script>
+<script src="./searching.js"></script>
+</body>
+
+</html>
+
+
